@@ -2,6 +2,8 @@ package com.KiHoonLee.DBProject.controller;
 
 import com.KiHoonLee.DBProject.repository.MainRepository;
 import com.KiHoonLee.DBProject.table.Stock;
+import com.KiHoonLee.DBProject.table.StockNamePrice;
+import com.KiHoonLee.DBProject.table.StockNamePriceChange;
 import com.KiHoonLee.DBProject.table.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,8 +46,15 @@ public class MainController {
     //홈 화면 관심순위 상위 5개를 얻음
     @GetMapping("/interestRank")
     public ResponseEntity<?> getInterestRank() {
-        List<StockQuote> stockQuotes = mainRepository.findInterestRank();
-        return new ResponseEntity<>(stockQuotes, HttpStatus.OK);
+        List<StockNamePrice> stockNamePrices = mainRepository.findInterestRank();
+        return new ResponseEntity<>(stockNamePrices, HttpStatus.OK);
+    }
+
+    //홈 화면에서 급등주 상위 2개 급락주 하위 2개를 얻음
+    @GetMapping("/fluctuationRank")
+    public ResponseEntity<?> getFluctuationRank() {
+        List<StockNamePriceChange> stockNamePriceChanges = mainRepository.findFluctuationRank();
+        return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
     }
 
 }
