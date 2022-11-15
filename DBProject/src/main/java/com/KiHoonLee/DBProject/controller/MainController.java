@@ -41,6 +41,13 @@ public class MainController {
         return new ResponseEntity<>(StockQuote, HttpStatus.OK);
     }
 
+    //홈 화면 관심순위 상위 5개를 얻음
+    @GetMapping("/interestRank")
+    public ResponseEntity<?> getInterestRank() {
+        List<StockQuote> stockQuotes = mainRepository.findInterestRank();
+        return new ResponseEntity<>(stockQuotes, HttpStatus.OK);
+    }
+
 }
 
 //Date(now()); 오늘 날짜 체크 되니까
