@@ -28,7 +28,7 @@ public class MainRepository {
     public List<StockNamePrice> findInterestRank() {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePrice.class);
         List<StockNamePrice> stockNamePrices = jdbcTemplate.query(
-            "SELECT stk.STK_NM, S.S_LAST\n" +
+                "SELECT stk.STK_NM, S.S_LAST\n" +
                 "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
                 "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
                 "GROUP BY W.STOCK_STK_CD, S.S_LAST\n" +
