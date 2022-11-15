@@ -14,5 +14,5 @@ public class StockQuote {
     private int sHigh;
     private int sLow;
     private int sVol;
-    private int sChg;
+    private float sChg;
 }
