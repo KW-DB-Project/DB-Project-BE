@@ -2,6 +2,7 @@ package com.KiHoonLee.DBProject.controller;
 
 import com.KiHoonLee.DBProject.repository.StockRepository;
 import com.KiHoonLee.DBProject.table.StockNamePriceChange;
+import com.KiHoonLee.DBProject.table.StockNamePriceVolume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,18 @@ public class StockController {
     public ResponseEntity<?> getStockInterestList() {
         List<StockNamePriceChange> stockNamePriceChanges = stockRepository.findAllStockInterest();
         return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
+    }
+    //국내 등락비
+    @GetMapping("/stock/fluctuation")
+    public ResponseEntity<?> getStockFluctuation() {
+        List<StockNamePriceChange> stockNamePriceChanges = stockRepository.findAllStockFluctuation();
+        return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
+    }
+
+    //국내 거래량
+    @GetMapping("/stock/volume")
+    public ResponseEntity<?> getStockVolume() {
+        List<StockNamePriceVolume> stockNamePriceVolumes = stockRepository.findAllStockVolume();
+        return new ResponseEntity<>(stockNamePriceVolumes, HttpStatus.OK);
     }
 }
