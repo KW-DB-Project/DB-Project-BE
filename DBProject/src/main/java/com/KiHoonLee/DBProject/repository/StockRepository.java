@@ -14,7 +14,7 @@ public class StockRepository {
     private JdbcTemplate jdbcTemplate;
 
     //국내탭에서 관심종목 리스트를 얻음
-    //관심종목 중 급락비 기준
+    //관심종목 중 등락비 기준
     public List<StockNamePriceChange> findAllStockInterest() {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePriceChange.class);
         List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
