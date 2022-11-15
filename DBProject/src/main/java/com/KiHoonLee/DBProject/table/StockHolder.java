@@ -5,9 +5,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class StockHolder {
-    private String id;
-    private String pw;
-    private String uNm;
-    private int age;
-    private int balance;
+    private String stockStkCd;
+    private String mStockHolder;
+    private int stockNum;
+    private float stake;
 }
