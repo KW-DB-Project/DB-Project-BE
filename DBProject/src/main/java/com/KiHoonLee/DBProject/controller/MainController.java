@@ -1,5 +1,6 @@
 package com.KiHoonLee.DBProject.controller;
 
+import com.KiHoonLee.DBProject.repository.MainRepository;
 import com.KiHoonLee.DBProject.table.Stock;
 import com.KiHoonLee.DBProject.table.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,22 @@ import java.util.List;
 @RestController
 public class MainController {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private MainRepository mainRepository;
 
     @GetMapping("/test1")
     public ResponseEntity<?> getRising(){
         var rowMapper = BeanPropertyRowMapper.newInstance(StockQuote.class);
         List<StockQuote> StockQuote = jdbcTemplate.query("select * from stock_quote where Date(s_date)='2022-10-28' order by s_chg desc limit 4",rowMapper);
         return new ResponseEntity<>(StockQuote, HttpStatus.OK);
+    }
+    @GetMapping("/test")
+    public ResponseEntity<?> getStock() {
+        //var rowMapper = BeanPropertyRowMapper.newInstance(Stock.class);
+        //List<Stock> stock = jdbcTemplate.query("select STK_CD from stock",rowMapper);
+        List<Stock> stocks = mainRepository.findAllStock();
+        return new ResponseEntity<>(stocks, HttpStatus.OK);
     }
 
     @GetMapping("/test2")
