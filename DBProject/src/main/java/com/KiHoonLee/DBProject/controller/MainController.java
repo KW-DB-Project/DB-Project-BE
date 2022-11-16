@@ -1,13 +1,12 @@
 package com.KiHoonLee.DBProject.controller;
 
+import com.KiHoonLee.DBProject.dto.SoaringStockDto;
+import com.KiHoonLee.DBProject.dto.TradingVolumeDto;
 import com.KiHoonLee.DBProject.repository.MainRepository;
 import com.KiHoonLee.DBProject.table.Stock;
-import com.KiHoonLee.DBProject.table.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,29 +15,24 @@ import java.util.List;
 @RestController
 public class MainController {
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
     private MainRepository mainRepository;
 
-    @GetMapping("/test1")
-    public ResponseEntity<?> getRising(){
-        var rowMapper = BeanPropertyRowMapper.newInstance(StockQuote.class);
-        List<StockQuote> StockQuote = jdbcTemplate.query("select * from stock_quote where Date(s_date)='2022-10-28' order by s_chg desc limit 4",rowMapper);
-        return new ResponseEntity<>(StockQuote, HttpStatus.OK);
-    }
     @GetMapping("/test")
     public ResponseEntity<?> getStock() {
-        //var rowMapper = BeanPropertyRowMapper.newInstance(Stock.class);
-        //List<Stock> stock = jdbcTemplate.query("select STK_CD from stock",rowMapper);
         List<Stock> stocks = mainRepository.findAllStock();
         return new ResponseEntity<>(stocks, HttpStatus.OK);
     }
 
+    @GetMapping("/test1")
+    public ResponseEntity<?> getSoaringStock(){
+        List<SoaringStockDto> soaringStockDto = mainRepository.findSoaringStock();
+        return new ResponseEntity<>(soaringStockDto, HttpStatus.OK);
+    }
+
     @GetMapping("/test2")
-    public ResponseEntity<?> getVol(){
-        var rowMapper = BeanPropertyRowMapper.newInstance(StockQuote.class);
-        List<StockQuote> StockQuote = jdbcTemplate.query("select * from stock_quote where Date(s_date)='2022-10-28' order by s_vol desc limit 5",rowMapper);
-        return new ResponseEntity<>(StockQuote, HttpStatus.OK);
+    public ResponseEntity<?> getTradingVolume(){
+        List<TradingVolumeDto> tradingVolumeDto = mainRepository.findTradingVolume();
+        return new ResponseEntity<>(tradingVolumeDto, HttpStatus.OK);
     }
 
 }
