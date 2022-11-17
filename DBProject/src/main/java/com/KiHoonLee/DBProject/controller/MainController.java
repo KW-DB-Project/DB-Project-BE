@@ -21,7 +21,7 @@ public class MainController {
 
     @GetMapping("/test")
     public ResponseEntity<?> getStock() {
-        List<Stock> stocks = mainRepository.findAllStock();
+        Stock stocks = mainRepository.findAllStock();
         return new ResponseEntity<>(stocks, HttpStatus.OK);
     }
 

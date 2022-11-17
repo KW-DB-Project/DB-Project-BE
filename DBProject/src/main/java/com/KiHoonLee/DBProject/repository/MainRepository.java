@@ -17,9 +17,9 @@ public class MainRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Stock> findAllStock() {
+    public Stock findAllStock() {
         var rowMapper = BeanPropertyRowMapper.newInstance(Stock.class);
-        List<Stock> stock = jdbcTemplate.query("select STK_CD from stock",rowMapper);
+        Stock stock = jdbcTemplate.queryForObject("select STK_CD from stock where stk_cd='000060'",rowMapper);
         return stock;
     }
 
