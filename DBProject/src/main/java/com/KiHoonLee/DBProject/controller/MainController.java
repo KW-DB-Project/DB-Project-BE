@@ -2,8 +2,7 @@ package com.KiHoonLee.DBProject.controller;
 
 import com.KiHoonLee.DBProject.dto.SoaringStockDto;
 import com.KiHoonLee.DBProject.dto.TradingVolumeDto;
-import com.KiHoonLee.DBProject.repository.MainRepository;
-import com.KiHoonLee.DBProject.table.Stock;
+import com.KiHoonLee.DBProject.service.MainService;
 import com.KiHoonLee.DBProject.table.StockNamePrice;
 import com.KiHoonLee.DBProject.table.StockNamePriceChange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +16,32 @@ import java.util.List;
 @RestController
 public class MainController {
     @Autowired
-    private MainRepository mainRepository;
-
-    @GetMapping("/test")
-    public ResponseEntity<?> getStock() {
-        Stock stocks = mainRepository.findAllStock();
-        return new ResponseEntity<>(stocks, HttpStatus.OK);
-    }
+    private MainService mainService;
 
     @GetMapping("/test1")
     public ResponseEntity<?> getSoaringStock(){
-        List<SoaringStockDto> soaringStockDto = mainRepository.findSoaringStock();
+        List<SoaringStockDto> soaringStockDto = mainService.getSoaringStock();
         return new ResponseEntity<>(soaringStockDto, HttpStatus.OK);
     }
 
     @GetMapping("/test2")
     public ResponseEntity<?> getTradingVolume(){
-        List<TradingVolumeDto> tradingVolumeDto = mainRepository.findTradingVolume();
+        List<TradingVolumeDto> tradingVolumeDto = mainService.getTradingVolume();
         return new ResponseEntity<>(tradingVolumeDto, HttpStatus.OK);
     }
 
     //홈 화면 관심순위 상위 5개를 얻음
     @GetMapping("/interestRank")
     public ResponseEntity<?> getInterestRank() {
-        List<StockNamePrice> stockNamePrices = mainRepository.findInterestRank();
+        List<StockNamePrice> stockNamePrices = mainService.getInterestRank();
         return new ResponseEntity<>(stockNamePrices, HttpStatus.OK);
     }
 
     //홈 화면에서 급등주 상위 2개 급락주 하위 2개를 얻음
     @GetMapping("/fluctuationRank")
     public ResponseEntity<?> getFluctuationRank() {
-        List<StockNamePriceChange> stockNamePriceChanges = mainRepository.findFluctuationRank();
+
+        List<StockNamePriceChange> stockNamePriceChanges = mainService.getFluctuationRank();
         return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
     }
 
