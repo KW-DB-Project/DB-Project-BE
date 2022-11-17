@@ -19,6 +19,7 @@ public class UserService {
         Boolean result = true;
         try {
             IdPassword isMember = userRepository.findByIdAndPassword(idPassword);
+            if (isMember.getPw().isEmpty()||isMember.getId().isEmpty()) result = false;
         } catch (EmptyResultDataAccessException e) {
             result = false;
         } finally {
