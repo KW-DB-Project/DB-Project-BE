@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     //로그인
-    @PostMapping("/user/login")
+    @PostMapping("api/user/login")
     public ResponseEntity<?> authorizeUser(@RequestBody IdPassword idPassword) {
         return new ResponseEntity<>(userService.isMember(idPassword), HttpStatus.OK);
     }
