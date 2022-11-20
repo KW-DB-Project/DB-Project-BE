@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CommunityService {
@@ -34,5 +36,17 @@ public class CommunityService {
         }
 
         return isSuccessDto;
+    }
+
+    //게시판 게시글들을 찾음
+    public List<Board> printPost(String stockName) {
+        List<Board> boards;
+        try {
+            String stockCode = communityRepository.findStockCodeByStockName(stockName);
+            boards = communityRepository.findPostsByStockCode(stockCode);
+        } catch (EmptyResultDataAccessException e) {
+            boards = null;
+        }
+        return boards;
     }
 }

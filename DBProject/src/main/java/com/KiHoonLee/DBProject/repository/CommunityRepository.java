@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class CommunityRepository {
@@ -41,5 +42,18 @@ public class CommunityRepository {
                 "WHERE STK_NM = ?"
                 , String.class, name);
         return id;
+    }
+    //주식코드에 해당하는 게시글 찾음
+    public List<Board> findPostsByStockCode(String stockCode) throws EmptyResultDataAccessException {
+        var rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
+
+        List<Board> boards = jdbcTemplate.query(
+                "SELECT *\n" +
+                "FROM BOARD\n" +
+                "WHERE STOCK_STK_CD = ?\n" +
+                "ORDER BY CREATE_DATE DESC"
+                , rowMapper, stockCode
+        );
+        return boards;
     }
 }
