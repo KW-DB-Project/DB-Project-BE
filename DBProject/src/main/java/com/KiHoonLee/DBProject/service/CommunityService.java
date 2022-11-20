@@ -49,4 +49,16 @@ public class CommunityService {
         }
         return boards;
     }
+
+    //좋아요 개수 증가
+    //에러시 좋아요 수 -1반환
+    public int likeUp(int idx) {
+        int likeNum = -1;
+        communityRepository.updateUpLike(idx);
+        try {
+            likeNum = communityRepository.findLikeCount(idx);
+        } catch (EmptyResultDataAccessException e){}
+
+        return likeNum;
+    }
 }

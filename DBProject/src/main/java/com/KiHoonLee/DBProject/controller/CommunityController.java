@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +30,18 @@ public class CommunityController {
     //게시글 출력
     @PostMapping("/print")
     public ResponseEntity<?> writePost(@RequestBody Map<String, String> body) {
-        List<Board> boards   = communityService.printPost(body.get("stockName"));
+        List<Board> boards = communityService.printPost(body.get("stockName"));
         return new ResponseEntity<>(boards, HttpStatus.OK);
+    }
+
+    //좋아요 증가
+    @PostMapping("/like")
+    public ResponseEntity<?> likeUp(@RequestBody Map<String, Integer> body) {
+        Map<String, Integer> responseBody = new HashMap<String, Integer>();
+        int likeNum = communityService.likeUp(body.get("idx"));
+
+        responseBody.put("likeCount", likeNum);
+
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 }
