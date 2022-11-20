@@ -3,6 +3,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -14,6 +17,6 @@ public class Board {
     private String stockStkCd;
     private String title;
     private String content;
-    private Date creatDate;
+    private Date createDate;
     private int bLike;
 }
