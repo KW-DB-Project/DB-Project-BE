@@ -9,38 +9,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/main")
 public class MainController {
     @Autowired
     private MainService mainService;
 
-    @GetMapping("/test1")
+    @GetMapping("/soaring") //급등주 4개
     public ResponseEntity<?> getSoaringStock(){
         List<SoaringStockDto> soaringStockDto = mainService.getSoaringStock();
         return new ResponseEntity<>(soaringStockDto, HttpStatus.OK);
     }
 
-    @GetMapping("/test2")
+    @GetMapping("/volume") //거래량 5개
     public ResponseEntity<?> getTradingVolume(){
         List<TradingVolumeDto> tradingVolumeDto = mainService.getTradingVolume();
         return new ResponseEntity<>(tradingVolumeDto, HttpStatus.OK);
     }
 
     //홈 화면 관심순위 상위 5개를 얻음
-    @GetMapping("/interestRank")
+    @GetMapping("/interest")
     public ResponseEntity<?> getInterestRank() {
         List<StockNamePrice> stockNamePrices = mainService.getInterestRank();
         return new ResponseEntity<>(stockNamePrices, HttpStatus.OK);
     }
 
     //홈 화면에서 급등주 상위 2개 급락주 하위 2개를 얻음
-    @GetMapping("/fluctuationRank")
+    @GetMapping("/fluctuation")
     public ResponseEntity<?> getFluctuationRank() {
-
         List<StockNamePriceChange> stockNamePriceChanges = mainService.getFluctuationRank();
         return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
     }
