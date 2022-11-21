@@ -39,23 +39,31 @@ public class UserService {
         }
     }
 
-    //예수금
+    //예수금 조회
     public DepositReceivedDto getDepositReceived(Map<String,String> body) {
         DepositReceivedDto depositReceivedDto = userRepository.findDepositReceived(body);
         return depositReceivedDto;
     }
-    //관심종목
+
+    //예수금 충전
+    public IsSuccessDto updateDepositReceived(Map<String,String> body) {
+        IsSuccessDto isSuccessDto = userRepository.modifyDepositReceived(body);
+        return isSuccessDto;
+    }
+    
+    //내 관심종목 조회
     public List<MyInterestDto> getMyInteresting(Map<String,String> body) {
         List<MyInterestDto> myInterestDto = userRepository.findMyInteresting(body);
         return myInterestDto;
     }
-    //작성글
+
+    //내 작성글 조회
     public List<MyWritingDto> getMyWriting(Map<String,String> body) {
         List<MyWritingDto> myWritingDto = userRepository.findMyWriting(body);
         return myWritingDto;
     }
 
-    //보유 주식
+    //보유 주식 조회
     public AllGainDto getMyStock(Map<String,String> body) {
 
         float rateOfReturn = userRepository.findRateOfReturn(body);

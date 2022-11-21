@@ -47,7 +47,16 @@ public class UserRepository {
         return depositReceivedDto;
     }
 
-    //관심종목
+    //예수금 충전
+    public IsSuccessDto modifyDepositReceived(Map<String,String> body) {
+        jdbcTemplate.update(
+                "update s_user\n" +
+                    "set balance = balance + ?\n" +
+                    "where id = ?",body.get("balance"),body.get("id"));
+        return new IsSuccessDto(true);
+    }
+
+    //관심 종목 조회
     public List<MyInterestDto> findMyInteresting(Map<String,String> body) {
         var rowMapper = BeanPropertyRowMapper.newInstance(MyInterestDto.class);
         List<MyInterestDto>myInterestDto = jdbcTemplate.query(
@@ -59,7 +68,7 @@ public class UserRepository {
         return myInterestDto;
     }
 
-    //작성글
+    //작성글 조회
     public List<MyWritingDto> findMyWriting(Map<String,String> body) {
         var rowMapper = BeanPropertyRowMapper.newInstance(MyWritingDto.class);
         List<MyWritingDto> myWritingDto = jdbcTemplate.query(
@@ -68,7 +77,8 @@ public class UserRepository {
                         "where USER_ID=?",rowMapper,body.get("id"));
         return myWritingDto;
     }
-
+    
+    //총 수익률
     public float findRateOfReturn(Map<String,String> body){
         float rateOfReturn = jdbcTemplate.queryForObject(
                 "with my_stock as (select h.user_id, h.gain_loss as gl,sum(t.buying * t.stk_num) as buying \n" +
@@ -80,6 +90,8 @@ public class UserRepository {
                     "from my_stock",Float.class,body.get("id"));
         return rateOfReturn;
     }
+    
+    //총 평가금액
     public int findAppraisalAmount(Map<String,String> body) {
         int appraisalAmount = jdbcTemplate.queryForObject(
                 "select sum(q.s_last*h.stk_num) as appraisal_amount\n" +
@@ -87,7 +99,8 @@ public class UserRepository {
                     "where h.stock_stk_cd=s.stk_cd and u.id=h.user_id and q.stock_stk_cd=s.STK_CD and Date(q.s_date)='2022-10-28'and h.user_id=?\n",Integer.class,body.get("id"));
         return appraisalAmount;
     }
-    //보유주식
+    
+    //보유 주식
     public List<MyStockDto> findMyStockDto(Map<String,String> body) {
         var rowMapper = BeanPropertyRowMapper.newInstance(MyStockDto.class);
         List<MyStockDto> myStockDto = jdbcTemplate.query(

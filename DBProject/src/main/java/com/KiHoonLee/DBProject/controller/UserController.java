@@ -35,27 +35,33 @@ public class UserController {
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 
-    //예수금 deposit received
+    //예수금
     @PostMapping("/depositReceived")
     public ResponseEntity<?>getDepositReceived(@RequestBody Map<String,String> body){
         DepositReceivedDto depositReceivedDto = userService.getDepositReceived(body);
         return new ResponseEntity<>(depositReceivedDto, HttpStatus.OK);
     }
 
-    //관심종목 myInterest
+    //예수금 충전
+    @PostMapping("/addDepositReceived")
+    public ResponseEntity<?>updateDepositReceived(@RequestBody Map<String,String> body){
+        IsSuccessDto isSuccessDto = userService.updateDepositReceived(body);
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
+
+    //관심종목
     @PostMapping("/myInterest")
     public ResponseEntity<?>getMyInterest(@RequestBody Map<String,String> body){
         List<MyInterestDto> myInterestDto = userService.getMyInteresting(body);
         return new ResponseEntity<>(myInterestDto, HttpStatus.OK);
     }
 
-    //작성글 myWriting
+    //작성글
     @PostMapping("/myWriting")
     public ResponseEntity<?>getMyWriting(@RequestBody Map<String,String> body){
         List<MyWritingDto> myWritingDto = userService.getMyWriting(body);
         return new ResponseEntity<>(myWritingDto, HttpStatus.OK);
     }
-
 
     //보유 주식
     @PostMapping("/myStock")
