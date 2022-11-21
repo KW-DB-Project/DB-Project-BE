@@ -1,9 +1,7 @@
 package com.KiHoonLee.DBProject.service;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
-import com.KiHoonLee.DBProject.dto.user.DepositReceivedDto;
-import com.KiHoonLee.DBProject.dto.user.MyInterestDto;
-import com.KiHoonLee.DBProject.dto.user.MyWritingDto;
+import com.KiHoonLee.DBProject.dto.user.*;
 import com.KiHoonLee.DBProject.repository.UserRepository;
 import com.KiHoonLee.DBProject.table.IdPassword;
 import com.KiHoonLee.DBProject.table.User;
@@ -57,13 +55,16 @@ public class UserService {
         return myWritingDto;
     }
 
-//    public IsSuccessDto updateMyStock(Map<String,String> body) {
-//        try {
-//            IsSuccessDto isSuccessDto = userRepository.modifyMyStock(body);
-//            return isSuccessDto;
-//        } catch (NullPointerException e) {
-//            return new IsSuccessDto(false);
-//        }
-//    }
+    //보유 주식
+    public AllGainDto getMyStock(Map<String,String> body) {
+
+        float rateOfReturn = userRepository.findRateOfReturn(body);
+        int appraisalAmount = userRepository.findAppraisalAmount(body);
+        List<MyStockDto> myStockDto= userRepository.findMyStockDto(body);
+
+        AllGainDto allGainDto = new AllGainDto(rateOfReturn,appraisalAmount,myStockDto);
+        return allGainDto;
+    }
+
 
 }

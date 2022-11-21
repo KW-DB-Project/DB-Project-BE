@@ -1,9 +1,6 @@
 package com.KiHoonLee.DBProject.controller;
 
-import com.KiHoonLee.DBProject.dto.user.DepositReceivedDto;
-import com.KiHoonLee.DBProject.dto.user.MyInterestDto;
-import com.KiHoonLee.DBProject.dto.user.MyStockDto;
-import com.KiHoonLee.DBProject.dto.user.MyWritingDto;
+import com.KiHoonLee.DBProject.dto.user.*;
 import com.KiHoonLee.DBProject.service.UserService;
 import com.KiHoonLee.DBProject.table.IdPassword;
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
@@ -60,11 +57,11 @@ public class UserController {
     }
 
 
-    //내 수익률 업데이트
-//    @PostMapping("/")
-//    public ResponseEntity<?>updateMyStock(@RequestBody Map<String,String> body){
-//        IsSuccessDto isSuccessDto  = userService.updateMyStock(body);
-//        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
-//    }
+    //보유 주식
+    @PostMapping("/myStock")
+    public ResponseEntity<?>getMyStock(@RequestBody Map<String,String> body){
+        AllGainDto allGainDto = userService.getMyStock(body);
+        return new ResponseEntity<>(allGainDto, HttpStatus.OK);
+    }
 
 }

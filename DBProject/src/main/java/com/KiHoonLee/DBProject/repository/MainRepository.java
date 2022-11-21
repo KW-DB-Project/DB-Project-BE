@@ -2,7 +2,6 @@ package com.KiHoonLee.DBProject.repository;
 
 import com.KiHoonLee.DBProject.dto.SoaringStockDto;
 import com.KiHoonLee.DBProject.dto.TradingVolumeDto;
-import com.KiHoonLee.DBProject.table.Stock;
 import com.KiHoonLee.DBProject.table.StockNamePrice;
 import com.KiHoonLee.DBProject.table.StockNamePriceChange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,23 @@ public class MainRepository {
 
     public List<SoaringStockDto> findSoaringStock() {
         var rowMapper = BeanPropertyRowMapper.newInstance(SoaringStockDto.class);
-        List<SoaringStockDto> soaringStockDto = jdbcTemplate.query("select s.STK_NM, q.S_LAST, q.S_CHG from stock s, stock_quote q where Date(s_date)='2022-10-28' and s.STK_CD=q.STOCK_STK_CD order by s_chg desc limit 4",rowMapper);
+        List<SoaringStockDto> soaringStockDto = jdbcTemplate.query(
+                    "select s.STK_NM, q.S_LAST, q.S_CHG " +
+                        "from stock s, stock_quote q " +
+                        "where Date(s_date)='2022-10-28' and s.STK_CD=q.STOCK_STK_CD " +
+                        "order by s_chg desc " +
+                        "limit 4", rowMapper);
         return soaringStockDto;
     }
 
     public List<TradingVolumeDto> findTradingVolume() {
         var rowMapper = BeanPropertyRowMapper.newInstance(TradingVolumeDto.class);
-        List<TradingVolumeDto> tradingVolumeDto = jdbcTemplate.query("select s.STK_NM, q.S_LAST from stock s, stock_quote q where Date(s_date)='2022-10-28' and s.STK_CD=q.STOCK_STK_CD order by s_vol desc limit 5", rowMapper);
+        List<TradingVolumeDto> tradingVolumeDto = jdbcTemplate.query(
+                    "select s.STK_NM, q.S_LAST " +
+                        "from stock s, stock_quote q " +
+                        "where Date(s_date)='2022-10-28' and s.STK_CD=q.STOCK_STK_CD " +
+                        "order by s_vol desc " +
+                        "limit 5", rowMapper);
         return tradingVolumeDto;
     }
 
@@ -35,12 +44,11 @@ public class MainRepository {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePrice.class);
         List<StockNamePrice> stockNamePrices = jdbcTemplate.query(
                 "SELECT stk.STK_NM, S.S_LAST\n" +
-                "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
-                "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
-                "GROUP BY W.STOCK_STK_CD, S.S_LAST\n" +
-                "ORDER BY COUNT(W.STOCK_STK_CD) DESC\n" +
-                "LIMIT 5"
-                ,rowMapper);
+                    "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
+                    "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
+                    "GROUP BY W.STOCK_STK_CD, S.S_LAST\n" +
+                    "ORDER BY COUNT(W.STOCK_STK_CD) DESC\n" +
+                    "LIMIT 5",rowMapper);
         return stockNamePrices;
     }
 
@@ -58,8 +66,7 @@ public class MainRepository {
                 "FROM STOCK_QUOTE as s, STOCK as stk\n" +
                 "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD\n" +
                 "ORDER BY s.S_CHG ASC\n" +
-                "LIMIT 2)"
-                ,rowMapper);
+                "LIMIT 2)",rowMapper);
         return stockNamePriceChanges;
     }
 }
