@@ -1,9 +1,6 @@
 package com.KiHoonLee.DBProject.controller;
 
-import com.KiHoonLee.DBProject.dto.user.DepositReceivedDto;
-import com.KiHoonLee.DBProject.dto.user.MyInterestDto;
-import com.KiHoonLee.DBProject.dto.user.MyStockDto;
-import com.KiHoonLee.DBProject.dto.user.MyWritingDto;
+import com.KiHoonLee.DBProject.dto.user.*;
 import com.KiHoonLee.DBProject.service.UserService;
 import com.KiHoonLee.DBProject.table.IdPassword;
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
@@ -38,33 +35,39 @@ public class UserController {
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 
-    //예수금 deposit received
+    //예수금
     @PostMapping("/depositReceived")
     public ResponseEntity<?>getDepositReceived(@RequestBody Map<String,String> body){
         DepositReceivedDto depositReceivedDto = userService.getDepositReceived(body);
         return new ResponseEntity<>(depositReceivedDto, HttpStatus.OK);
     }
 
-    //관심종목 myInterest
+    //예수금 충전
+    @PostMapping("/addDepositReceived")
+    public ResponseEntity<?>updateDepositReceived(@RequestBody Map<String,String> body){
+        IsSuccessDto isSuccessDto = userService.updateDepositReceived(body);
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
+
+    //관심종목
     @PostMapping("/myInterest")
     public ResponseEntity<?>getMyInterest(@RequestBody Map<String,String> body){
         List<MyInterestDto> myInterestDto = userService.getMyInteresting(body);
         return new ResponseEntity<>(myInterestDto, HttpStatus.OK);
     }
 
-    //작성글 myWriting
+    //작성글
     @PostMapping("/myWriting")
     public ResponseEntity<?>getMyWriting(@RequestBody Map<String,String> body){
         List<MyWritingDto> myWritingDto = userService.getMyWriting(body);
         return new ResponseEntity<>(myWritingDto, HttpStatus.OK);
     }
 
-
-    //내 수익률 업데이트
-//    @PostMapping("/")
-//    public ResponseEntity<?>updateMyStock(@RequestBody Map<String,String> body){
-//        IsSuccessDto isSuccessDto  = userService.updateMyStock(body);
-//        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
-//    }
+    //보유 주식
+    @PostMapping("/myStock")
+    public ResponseEntity<?>getMyStock(@RequestBody Map<String,String> body){
+        AllGainDto allGainDto = userService.getMyStock(body);
+        return new ResponseEntity<>(allGainDto, HttpStatus.OK);
+    }
 
 }

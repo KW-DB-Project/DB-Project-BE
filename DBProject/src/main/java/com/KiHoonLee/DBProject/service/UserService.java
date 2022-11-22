@@ -1,9 +1,7 @@
 package com.KiHoonLee.DBProject.service;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
-import com.KiHoonLee.DBProject.dto.user.DepositReceivedDto;
-import com.KiHoonLee.DBProject.dto.user.MyInterestDto;
-import com.KiHoonLee.DBProject.dto.user.MyWritingDto;
+import com.KiHoonLee.DBProject.dto.user.*;
 import com.KiHoonLee.DBProject.repository.UserRepository;
 import com.KiHoonLee.DBProject.table.IdPassword;
 import com.KiHoonLee.DBProject.table.User;
@@ -41,29 +39,40 @@ public class UserService {
         }
     }
 
-    //예수금
+    //예수금 조회
     public DepositReceivedDto getDepositReceived(Map<String,String> body) {
         DepositReceivedDto depositReceivedDto = userRepository.findDepositReceived(body);
         return depositReceivedDto;
     }
-    //관심종목
+
+    //예수금 충전
+    public IsSuccessDto updateDepositReceived(Map<String,String> body) {
+        IsSuccessDto isSuccessDto = userRepository.modifyDepositReceived(body);
+        return isSuccessDto;
+    }
+    
+    //내 관심종목 조회
     public List<MyInterestDto> getMyInteresting(Map<String,String> body) {
         List<MyInterestDto> myInterestDto = userRepository.findMyInteresting(body);
         return myInterestDto;
     }
-    //작성글
+
+    //내 작성글 조회
     public List<MyWritingDto> getMyWriting(Map<String,String> body) {
         List<MyWritingDto> myWritingDto = userRepository.findMyWriting(body);
         return myWritingDto;
     }
 
-//    public IsSuccessDto updateMyStock(Map<String,String> body) {
-//        try {
-//            IsSuccessDto isSuccessDto = userRepository.modifyMyStock(body);
-//            return isSuccessDto;
-//        } catch (NullPointerException e) {
-//            return new IsSuccessDto(false);
-//        }
-//    }
+    //보유 주식 조회
+    public AllGainDto getMyStock(Map<String,String> body) {
+
+        float rateOfReturn = userRepository.findRateOfReturn(body);
+        int appraisalAmount = userRepository.findAppraisalAmount(body);
+        List<MyStockDto> myStockDto= userRepository.findMyStockDto(body);
+
+        AllGainDto allGainDto = new AllGainDto(rateOfReturn,appraisalAmount,myStockDto);
+        return allGainDto;
+    }
+
 
 }

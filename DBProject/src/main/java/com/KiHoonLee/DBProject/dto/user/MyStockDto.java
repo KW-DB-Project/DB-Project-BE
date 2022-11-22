@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 public class MyStockDto{
     private String userId;
     private String stockStkCd;
+    private int averagePrice;//평단가
     private int stkNum;
-    private int buying;
-    private int selling;
-    private int rateReturn; //수익률
-    private int gainLoss; //평가손익
+    private int gainLoss; //손익
 }
