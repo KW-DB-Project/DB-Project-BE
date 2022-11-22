@@ -82,8 +82,8 @@ public class UserRepository {
     public float findRateOfReturn(Map<String,String> body){
         float rateOfReturn = jdbcTemplate.queryForObject(
                 "with my_stock as (select h.user_id, h.gain_loss as gl,sum(t.buying * t.stk_num) as buying \n" +
-                    "from holdingstock h, transaction_description t, stock s, s_user u\n" +
-                    "where t.stock_stk_cd=s.stk_cd and u.id=t.user_id and h.stock_stk_cd=s.stk_cd and u.id=h.user_id\n" +
+                    "from holdingstock h, transaction_description t\n" +
+                    "where t.stock_stk_cd=h.stock_stk_cd and t.user_id = h.user_id\n" +
                     "group by h.user_id, h.gain_loss\n" +
                     "having h.user_id=?)\n" +
                     "select sum(my_stock.gl)*100/sum(my_stock.buying) as rate_of_return\n" +
@@ -95,8 +95,8 @@ public class UserRepository {
     public int findAppraisalAmount(Map<String,String> body) {
         int appraisalAmount = jdbcTemplate.queryForObject(
                 "select sum(q.s_last*h.stk_num) as appraisal_amount\n" +
-                    "from holdingstock h, stock_quote q, stock s, s_user u\n" +
-                    "where h.stock_stk_cd=s.stk_cd and u.id=h.user_id and q.stock_stk_cd=s.STK_CD and Date(q.s_date)='2022-10-28'and h.user_id=?\n",Integer.class,body.get("id"));
+                    "from holdingstock h, stock_quote q\n" +
+                    "where h.stock_stk_cd=q.STOCK_STK_CD and Date(q.s_date)='2022-10-28'and h.user_id=?\n",Integer.class,body.get("id"));
         return appraisalAmount;
     }
     
