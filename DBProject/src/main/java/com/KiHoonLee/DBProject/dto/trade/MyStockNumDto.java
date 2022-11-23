@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyStockNumDto {
-    private int num;
+    private int stkNum;
 }

@@ -44,7 +44,7 @@ public class TradingController {
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 
-    @PostMapping("/num")//해당 주식 보유 수, 평단가
+    @PostMapping("/num")//해당 주식 보유 수
     ResponseEntity<?> getNum(@RequestBody Map<String,String> body) {
         MyStockNumDto myStockNumDto = tradingService.getNum(body);
         return new ResponseEntity<>(myStockNumDto, HttpStatus.OK);
