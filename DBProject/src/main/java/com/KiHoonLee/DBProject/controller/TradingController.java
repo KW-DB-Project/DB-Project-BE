@@ -19,7 +19,6 @@ import java.util.Map;
 public class TradingController {
     @Autowired
     private TradingService tradingService;
-
     @GetMapping("/search") //검색해서 기업 정보
     public ResponseEntity<?> getSearchStock(@RequestParam("name") String name){
         SearchStockDto searchStockDto = tradingService.getSearchStock(name);
