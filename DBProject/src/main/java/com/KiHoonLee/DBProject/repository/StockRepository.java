@@ -68,10 +68,10 @@ public class StockRepository {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePriceChange.class);
         List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
                 "SELECT stk.STK_NM, S.S_LAST, S.S_CHG\n" +
-                    "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
-                    "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = stk.STK_CD AND stk.STK_CD = S.STOCK_STK_CD\n" +
-                    "GROUP BY W.STOCK_STK_CD, S.S_LAST, S.S_CHG\n" +
-                    "ORDER BY S.S_CHG DESC",rowMapper);
+                "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
+                "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
+                "GROUP BY W.STOCK_STK_CD, S.S_LAST, S.S_CHG\n" +
+                "ORDER BY COUNT(W.STOCK_STK_CD) DESC",rowMapper);
         return stockNamePriceChanges;
     }
 
