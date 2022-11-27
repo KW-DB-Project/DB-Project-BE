@@ -1,9 +1,11 @@
 package com.KiHoonLee.DBProject.repository;
 
+import com.KiHoonLee.DBProject.dto.KospiForGraphDto;
 import com.KiHoonLee.DBProject.dto.SoaringStockDto;
 import com.KiHoonLee.DBProject.dto.TradingVolumeDto;
 import com.KiHoonLee.DBProject.table.StockNamePrice;
 import com.KiHoonLee.DBProject.table.StockNamePriceChange;
+import com.KiHoonLee.DBProject.table.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -68,5 +70,16 @@ public class MainRepository {
                 "ORDER BY s.S_CHG ASC\n" +
                 "LIMIT 2)",rowMapper);
         return stockNamePriceChanges;
+    }
+
+    public List<KospiForGraphDto> findLast30Kospi() {
+        var rowMapper = BeanPropertyRowMapper.newInstance(KospiForGraphDto.class);
+        List<KospiForGraphDto> last30Kospi = jdbcTemplate.query(
+                "SELECT S_DATE, S_LAST\n" +
+                "FROM STOCK_QUOTE\n" +
+                "WHERE STOCK_STK_CD='999999'\n" +
+                "ORDER BY S_DATE DESC\n" +
+                "LIMIT 30", rowMapper);
+        return last30Kospi;
     }
 }

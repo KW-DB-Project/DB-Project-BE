@@ -1,10 +1,12 @@
 package com.KiHoonLee.DBProject.controller;
 
+import com.KiHoonLee.DBProject.dto.KospiForGraphDto;
 import com.KiHoonLee.DBProject.dto.SoaringStockDto;
 import com.KiHoonLee.DBProject.dto.TradingVolumeDto;
 import com.KiHoonLee.DBProject.service.MainService;
 import com.KiHoonLee.DBProject.table.StockNamePrice;
 import com.KiHoonLee.DBProject.table.StockNamePriceChange;
+import com.KiHoonLee.DBProject.table.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +46,13 @@ public class MainController {
     public ResponseEntity<?> getFluctuationRank() {
         List<StockNamePriceChange> stockNamePriceChanges = mainService.getFluctuationRank();
         return new ResponseEntity<>(stockNamePriceChanges, HttpStatus.OK);
+    }
+
+    //코스피 지수
+    @GetMapping("/kospi")
+    public ResponseEntity<?> getLast30Kospi() {
+        List<KospiForGraphDto> kospi30 = mainService.getLast30Kospi();
+        return new ResponseEntity<>(kospi30, HttpStatus.OK);
     }
 
 }
