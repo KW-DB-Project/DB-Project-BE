@@ -19,11 +19,15 @@ import java.util.Map;
 public class TradingController {
     @Autowired
     private TradingService tradingService;
-
     @GetMapping("/search") //검색해서 기업 정보
     public ResponseEntity<?> getSearchStock(@RequestParam("name") String name){
         SearchStockDto searchStockDto = tradingService.getSearchStock(name);
         return new ResponseEntity<>(searchStockDto, HttpStatus.OK);
+    }
+    @PostMapping("/heart") //하트표시 출력
+    public ResponseEntity<?> getInterestStock(@RequestBody Map<String,String> body){
+        IsSuccessDto isSuccessDto = tradingService.getInterestStock(body);
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 
     @PostMapping("/interest") //관심 기업 등록

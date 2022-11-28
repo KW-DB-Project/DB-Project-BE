@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyStockDto{
     private String userId;
-    private String stockStkCd;
+    private String stkNm;
     private int averagePrice;//평단가
     private int stkNum;
     private int gainLoss; //손익

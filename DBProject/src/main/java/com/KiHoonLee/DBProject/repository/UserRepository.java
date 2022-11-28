@@ -72,9 +72,9 @@ public class UserRepository {
     public List<MyWritingDto> findMyWriting(Map<String,String> body) {
         var rowMapper = BeanPropertyRowMapper.newInstance(MyWritingDto.class);
         List<MyWritingDto> myWritingDto = jdbcTemplate.query(
-                    "SELECT title,create_date,b_like " +
-                        "from board " +
-                        "where USER_ID=?",rowMapper,body.get("id"));
+                        "SELECT b.idx, s.STK_NM, b.title, b.create_date, b.b_like\n" +
+                            "from board b, stock s \n" +
+                            "where USER_ID = ? and b.stock_stk_cd = s.STK_CD ",rowMapper,body.get("id"));
         return myWritingDto;
     }
     
@@ -104,9 +104,9 @@ public class UserRepository {
     public List<MyStockDto> findMyStockDto(Map<String,String> body) {
         var rowMapper = BeanPropertyRowMapper.newInstance(MyStockDto.class);
         List<MyStockDto> myStockDto = jdbcTemplate.query(
-                "select h.user_id,h.stock_stk_cd,h.average_price,h.stk_num,h.gain_loss \n" +
-                    "FROM holdingstock h\n" +
-                    "where h.user_id=?",rowMapper,body.get("id"));
+                    "select h.user_id,s.STK_NM,h.average_price,h.stk_num,h.gain_loss\n" +
+                        "FROM holdingstock h, stock s\n" +
+                        "where h.user_id=? and s.STK_CD=h.stock_stk_cd;",rowMapper,body.get("id"));
         return myStockDto;
     }
 
