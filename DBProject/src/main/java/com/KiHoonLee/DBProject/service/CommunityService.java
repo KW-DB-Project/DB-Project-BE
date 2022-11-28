@@ -4,6 +4,7 @@ import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.PostDto;
 import com.KiHoonLee.DBProject.repository.CommunityRepository;
 import com.KiHoonLee.DBProject.table.Board;
+import com.KiHoonLee.DBProject.table.PostLikeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -52,12 +53,17 @@ public class CommunityService {
 
     //좋아요 개수 증가
     //에러시 좋아요 수 -1반환
-    public int likeUp(int idx) {
+    public int likeUp(PostLikeInfo postLikeInfo) {
         int likeNum = -1;
-        communityRepository.updateUpLike(idx);
+
+        //해당 idx가 존재하지 않으면 -1 존재하면 좋아요개수
         try {
-            likeNum = communityRepository.findLikeCount(idx);
-        } catch (EmptyResultDataAccessException e){}
+                //좋아요 1증가 이미 누른적 있으면 그대로
+                communityRepository.updateUpLike(postLikeInfo);
+                communityRepository.insertPostLikeUser(postLikeInfo);//해당 게시글 좋아요누린사람 추가
+                likeNum = communityRepository.findLikeCount(postLikeInfo.getPostIdx());
+
+        } catch (EmptyResultDataAccessException e) {}
 
         return likeNum;
     }

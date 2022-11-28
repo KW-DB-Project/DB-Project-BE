@@ -3,6 +3,7 @@ package com.KiHoonLee.DBProject.repository;
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.PostDto;
 import com.KiHoonLee.DBProject.table.Board;
+import com.KiHoonLee.DBProject.table.PostLikeInfo;
 import com.KiHoonLee.DBProject.table.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -56,13 +57,14 @@ public class CommunityRepository {
         );
         return boards;
     }
-    //좋아요 1증가
-    public void updateUpLike(int idx) {
+    //좋아요 1증가 이미 누른적이 있으면 그대로
+    public void updateUpLike(PostLikeInfo postLikeInfo) {
         //like + 1
         jdbcTemplate.update(
                 "UPDATE BOARD\n" +
                 "SET B_LIKE = B_LIKE + 1\n" +
-                "WHERE IDX = ?", idx);
+                "WHERE IDX = ? AND NOT EXISTS(SELECT * FROM POSTLIKE_INFO WHERE POST_IDX = ? AND USER_ID = ?)",
+                postLikeInfo.getPostIdx(), postLikeInfo.getPostIdx(), postLikeInfo.getUserId());
     }
 
     //좋아요 개수 찾음
@@ -75,5 +77,14 @@ public class CommunityRepository {
 
         return like;
     }
-
+    //사용자 등록
+    public void insertPostLikeUser(PostLikeInfo postLikeInfo) {
+        var rowMapper = BeanPropertyRowMapper.newInstance(PostLikeInfo.class);
+        jdbcTemplate.update(
+                "INSERT INTO POSTLIKE_INFO (POST_IDX, USER_ID)\n" +
+                "SELECT ?, ?\n" +
+                "FROM DUAL\n" +
+                "WHERE NOT EXISTS (SELECT * FROM POSTLIKE_INFO WHERE POST_IDX=? AND USER_ID=?)",
+                postLikeInfo.getPostIdx(), postLikeInfo.getUserId(), postLikeInfo.getPostIdx(), postLikeInfo.getUserId());
+    }
 }

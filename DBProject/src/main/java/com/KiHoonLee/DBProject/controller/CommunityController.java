@@ -4,6 +4,7 @@ import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.PostDto;
 import com.KiHoonLee.DBProject.service.CommunityService;
 import com.KiHoonLee.DBProject.table.Board;
+import com.KiHoonLee.DBProject.table.PostLikeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +37,9 @@ public class CommunityController {
 
     //좋아요 증가
     @PostMapping("/like")
-    public ResponseEntity<?> likeUp(@RequestBody Map<String, Integer> body) {
+    public ResponseEntity<?> likeUp(@RequestBody PostLikeInfo postLikeInfo) {
         Map<String, Integer> responseBody = new HashMap<String, Integer>();
-        int likeNum = communityService.likeUp(body.get("idx"));
+        int likeNum = communityService.likeUp(postLikeInfo);
 
         responseBody.put("likeCount", likeNum);
 
