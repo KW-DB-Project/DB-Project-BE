@@ -1,4 +1,4 @@
-package com.KiHoonLee.DBProject.dto;
+package com.KiHoonLee.DBProject.dto.community;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

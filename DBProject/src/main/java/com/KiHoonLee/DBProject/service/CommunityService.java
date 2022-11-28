@@ -1,7 +1,9 @@
 package com.KiHoonLee.DBProject.service;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
-import com.KiHoonLee.DBProject.dto.PostDto;
+import com.KiHoonLee.DBProject.dto.community.BoardIsLikeDto;
+import com.KiHoonLee.DBProject.dto.community.PostDto;
+import com.KiHoonLee.DBProject.dto.community.StkNameUseridDto;
 import com.KiHoonLee.DBProject.repository.CommunityRepository;
 import com.KiHoonLee.DBProject.table.Board;
 import com.KiHoonLee.DBProject.table.PostLikeInfo;
@@ -10,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +41,26 @@ public class CommunityService {
     }
 
     //게시판 게시글들을 찾음
-    public List<Board> printPost(String stockName) {
+    public List<BoardIsLikeDto> printPost(StkNameUseridDto stkNameUseridDto) {
         List<Board> boards;
+        List<BoardIsLikeDto> boardIsLikeDtos = new ArrayList<>();
+        boolean isLike;
         try {
-            String stockCode = communityRepository.findStockCodeByStockName(stockName);
+            //주식 코드를 찾음
+            String stockCode = communityRepository.findStockCodeByStockName(stkNameUseridDto.getStockName());
+            //해당 주식 코드를 가지는 게시글 리스트를 찾음
             boards = communityRepository.findPostsByStockCode(stockCode);
+
+            for (Board board : boards) {
+                //해당 게시글에 대해 좋아요를 눌렀는지 찾음
+                Boolean isLikePost = communityRepository.findIsLikePost(board.getIdx() , stkNameUseridDto.getUserId());
+                boardIsLikeDtos.add(new BoardIsLikeDto(board, isLikePost));
+            }
+
         } catch (EmptyResultDataAccessException e) {
-            boards = null;
+            boardIsLikeDtos = null;
         }
-        return boards;
+        return boardIsLikeDtos;
     }
 
     //좋아요 개수 증가

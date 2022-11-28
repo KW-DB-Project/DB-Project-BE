@@ -1,14 +1,15 @@
 package com.KiHoonLee.DBProject.controller;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
-import com.KiHoonLee.DBProject.dto.PostDto;
+import com.KiHoonLee.DBProject.dto.community.BoardIsLikeDto;
+import com.KiHoonLee.DBProject.dto.community.PostDto;
+import com.KiHoonLee.DBProject.dto.community.StkNameUseridDto;
 import com.KiHoonLee.DBProject.service.CommunityService;
 import com.KiHoonLee.DBProject.table.Board;
 import com.KiHoonLee.DBProject.table.PostLikeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -30,9 +31,9 @@ public class CommunityController {
 
     //게시글 출력
     @PostMapping("/print")
-    public ResponseEntity<?> writePost(@RequestBody Map<String, String> body) {
-        List<Board> boards = communityService.printPost(body.get("stockName"));
-        return new ResponseEntity<>(boards, HttpStatus.OK);
+    public ResponseEntity<?> writePost(@RequestBody StkNameUseridDto stockNameUseridDto) {
+        List<BoardIsLikeDto> boardIsLikeDtos = communityService.printPost(stockNameUseridDto);
+        return new ResponseEntity<>(boardIsLikeDtos, HttpStatus.OK);
     }
 
     //게시글 삭제

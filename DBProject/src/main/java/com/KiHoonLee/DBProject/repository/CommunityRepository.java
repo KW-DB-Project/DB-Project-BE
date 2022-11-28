@@ -1,10 +1,8 @@
 package com.KiHoonLee.DBProject.repository;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
-import com.KiHoonLee.DBProject.dto.PostDto;
 import com.KiHoonLee.DBProject.table.Board;
 import com.KiHoonLee.DBProject.table.PostLikeInfo;
-import com.KiHoonLee.DBProject.table.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,8 +10,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -99,5 +95,12 @@ public class CommunityRepository {
         jdbcTemplate.update(
                 "DELETE FROM BOARD\n" +
                 "WHERE IDX=?", idx);
+    }
+
+    public Boolean findIsLikePost(int idx, String userId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT * FROM POSTLIKE_INFO WHERE POST_IDX=? AND USER_ID=? limit 1) as success;",
+                Boolean.class, idx, userId);
+
     }
 }
