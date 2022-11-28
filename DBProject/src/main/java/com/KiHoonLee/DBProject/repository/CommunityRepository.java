@@ -87,4 +87,17 @@ public class CommunityRepository {
                 "WHERE NOT EXISTS (SELECT * FROM POSTLIKE_INFO WHERE POST_IDX=? AND USER_ID=?)",
                 postLikeInfo.getPostIdx(), postLikeInfo.getUserId(), postLikeInfo.getPostIdx(), postLikeInfo.getUserId());
     }
+    //게시글에 조아요 누른 사람을 전부 삭제한다
+    public void deletePostLikeUser(int idx) {
+        jdbcTemplate.update(
+                "DELETE FROM POSTLIKE_INFO\n" +
+                "WHERE POST_IDX=?",
+                idx);
+    }
+    //게시글 삭제
+    public void deletePost(int idx) {
+        jdbcTemplate.update(
+                "DELETE FROM BOARD\n" +
+                "WHERE IDX=?", idx);
+    }
 }

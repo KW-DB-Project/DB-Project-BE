@@ -67,4 +67,10 @@ public class CommunityService {
 
         return likeNum;
     }
+    //게시글 삭제 + 해당게시글에 좋아요 누른사람 삭제
+    public IsSuccessDto deletePost(int idx) {
+        communityRepository.deletePostLikeUser(idx);
+        communityRepository.deletePost(idx);
+        return new IsSuccessDto(true);
+    }
 }

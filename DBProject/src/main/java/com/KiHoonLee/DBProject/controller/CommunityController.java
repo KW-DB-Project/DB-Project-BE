@@ -35,6 +35,13 @@ public class CommunityController {
         return new ResponseEntity<>(boards, HttpStatus.OK);
     }
 
+    //게시글 삭제
+    @PostMapping("/postDelete")
+    public ResponseEntity<?> deletePost(@RequestBody Map<String, Integer> body) {
+        IsSuccessDto isSuccessDto = communityService.deletePost(body.get("idx"));
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
+
     //좋아요 증가
     @PostMapping("/like")
     public ResponseEntity<?> likeUp(@RequestBody PostLikeInfo postLikeInfo) {
