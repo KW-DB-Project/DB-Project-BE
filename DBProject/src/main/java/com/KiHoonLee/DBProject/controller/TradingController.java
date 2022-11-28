@@ -24,6 +24,11 @@ public class TradingController {
         SearchStockDto searchStockDto = tradingService.getSearchStock(name);
         return new ResponseEntity<>(searchStockDto, HttpStatus.OK);
     }
+    @PostMapping("/heart") //하트표시 출력
+    public ResponseEntity<?> getInterestStock(@RequestBody Map<String,String> body){
+        IsSuccessDto isSuccessDto = tradingService.getInterestStock(body);
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
 
     @PostMapping("/interest") //관심 기업 등록
     public ResponseEntity<?> insertInterestStock(@RequestBody Map<String,String> body){

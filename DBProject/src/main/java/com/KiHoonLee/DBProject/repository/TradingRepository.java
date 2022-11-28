@@ -26,6 +26,22 @@ public class TradingRepository {
         return stockPriceDto;
     }
 
+    //관심종목 하트
+    public IsSuccessDto findInterestStock(Map<String,String>body){
+        int isCheck=jdbcTemplate.queryForObject(
+                "select exists(\n" +
+                    "   select s_user_id,stock_stk_cd\n" +
+                    "    from watchlist\n" +
+                    "    where s_user_id=? and stock_stk_cd=?\n" +
+                    ") as isCheck",Integer.class,body.get("id"),body.get("cd"));
+        if(isCheck == 1){
+            return new IsSuccessDto(true);
+        }
+        else {
+            return new IsSuccessDto(false);
+        }
+    }
+
     //그래프 데이터
     public List<LastPriceDto> findLastPrice(String name)throws EmptyResultDataAccessException{
         var rowMapper = BeanPropertyRowMapper.newInstance(LastPriceDto.class);

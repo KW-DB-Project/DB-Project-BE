@@ -28,6 +28,10 @@ public class TradingService {
             return searchStockDto;
         }
     }
+    public IsSuccessDto getInterestStock(Map<String,String> body){
+        IsSuccessDto isSuccessDto= tradingRepository.findInterestStock(body);
+        return isSuccessDto;
+    }
 
     //잔고 조회
     public BalanceDto getBalance(Map<String,String> body){
