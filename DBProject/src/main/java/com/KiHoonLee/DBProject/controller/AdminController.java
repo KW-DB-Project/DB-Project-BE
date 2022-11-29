@@ -59,8 +59,8 @@ public class AdminController {
 
     //게시글 삭제 + 해당게시글에 좋아요 누른사람 삭제
     @PostMapping("/community/postDelete")
-    public ResponseEntity<?> deletePost(int idx) {
-        IsSuccessDto isSuccessDto= communityService.deletePost(idx);
+    public ResponseEntity<?> deletePost(@RequestBody Map<String, Integer> body) {
+        IsSuccessDto isSuccessDto= communityService.deletePost(body.get("idx"));
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 }
