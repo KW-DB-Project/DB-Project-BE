@@ -2,9 +2,8 @@ package com.KiHoonLee.DBProject.service;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoDto;
+import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoToUpdateDto;
 import com.KiHoonLee.DBProject.dto.admin.UserInfoDto;
-import com.KiHoonLee.DBProject.dto.community.BoardIsLikeDto;
-import com.KiHoonLee.DBProject.dto.community.StkNameUseridDto;
 import com.KiHoonLee.DBProject.repository.AdminRepository;
 import com.KiHoonLee.DBProject.repository.CommunityRepository;
 import com.KiHoonLee.DBProject.table.Board;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +63,15 @@ public class AdminService {
             boards = null;
         }
         return boards;
+    }
+
+    //기업 정보 수정(이름, 요약)
+    public IsSuccessDto updateEnterpriseInfo(EnterpriseInfoToUpdateDto modifiedEnterpriseInfoDto) {
+        //stockCode를 통해 주식이름을 찾음
+        String oldEnterpriseName = adminRepository.findStockNameByStockCode(modifiedEnterpriseInfoDto.getStockCode());
+        //주식이름을 저장함
+        modifiedEnterpriseInfoDto.setOldEntNm(oldEnterpriseName);
+        IsSuccessDto isSuccessDto = adminRepository.updateEnterpriseInfo(modifiedEnterpriseInfoDto);
+        return isSuccessDto;
     }
 }

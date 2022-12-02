@@ -2,6 +2,7 @@ package com.KiHoonLee.DBProject.controller;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoDto;
+import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoToUpdateDto;
 import com.KiHoonLee.DBProject.dto.admin.UserInfoDto;
 import com.KiHoonLee.DBProject.service.AdminService;
 import com.KiHoonLee.DBProject.service.CommunityService;
@@ -61,6 +62,13 @@ public class AdminController {
     @PostMapping("/community/postDelete")
     public ResponseEntity<?> deletePost(@RequestBody Map<String, Integer> body) {
         IsSuccessDto isSuccessDto= communityService.deletePost(body.get("idx"));
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
+
+    //기업정보 수정
+    @PostMapping("/enterprise/update")
+    public ResponseEntity<?> modifiedEnterpriseInfo(@RequestBody EnterpriseInfoToUpdateDto modifiedEnterpriseInfoDto) {
+        IsSuccessDto isSuccessDto = adminService.updateEnterpriseInfo(modifiedEnterpriseInfoDto);
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 }
