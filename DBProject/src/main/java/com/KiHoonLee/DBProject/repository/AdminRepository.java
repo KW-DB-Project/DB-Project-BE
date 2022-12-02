@@ -2,10 +2,12 @@ package com.KiHoonLee.DBProject.repository;
 
 import com.KiHoonLee.DBProject.dto.IsSuccessDto;
 import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoDto;
+import com.KiHoonLee.DBProject.dto.admin.EnterpriseInfoToUpdateDto;
 import com.KiHoonLee.DBProject.dto.admin.UserInfoDto;
 import com.KiHoonLee.DBProject.table.Board;
 import com.KiHoonLee.DBProject.table.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -81,5 +83,42 @@ public class AdminRepository {
                     "values(?,now(),?,?,?,?,0,0);",body.get("code"),body.get("price"),body.get("price"),body.get("price"),body.get("price"));
             return new IsSuccessDto(true);
         }
+    }
+
+    //기업정보 수정
+    public IsSuccessDto updateEnterpriseInfo(EnterpriseInfoToUpdateDto modifiedEnterpriseInfoDto) {
+        //stock table의 주식이름 수정
+        updateStockName(modifiedEnterpriseInfoDto.getStockCode(), modifiedEnterpriseInfoDto.getNewEntNm());
+        //기업정보 수정
+        jdbcTemplate.update(
+                "UPDATE ENTERPRISE_INFO\n" +
+                "SET ENT_NM=?, ENT_SMRY=?\n" +
+                "WHERE STOCK_STK_CD=? AND ENT_NM=?",
+                modifiedEnterpriseInfoDto.getNewEntNm(),
+                modifiedEnterpriseInfoDto.getNewEntSmr(),
+                modifiedEnterpriseInfoDto.getStockCode(),
+                modifiedEnterpriseInfoDto.getOldEntNm()
+        );
+        return new IsSuccessDto(true);
+    }
+
+    //주식이름 수정
+    public void updateStockName(String stockCode, String newStockName) {
+        //주식이름 수정
+        jdbcTemplate.update(
+                "UPDATE STOCK\n" +
+                "SET STK_NM=?\n" +
+                "WHERE STK_CD=?",
+                newStockName, stockCode);
+    }
+
+    //주식코드를 통해 주식이름을 찾음
+    public String findStockNameByStockCode(String stockCode) {
+        String stockName = jdbcTemplate.queryForObject(
+                            "SELECT STK_NM\n" +
+                            "FROM STOCK\n" +
+                            "WHERE STK_CD=?",
+                            String.class, stockCode);
+        return stockName;
     }
 }
