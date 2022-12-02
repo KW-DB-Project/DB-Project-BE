@@ -27,8 +27,18 @@ public class AdminRepository {
     }
     //유저 삭제
     public IsSuccessDto deleteUser(Map<String,String>body){
+        jdbcTemplate.update("Delete from postlike_info\n" +
+                "where user_id= ?;",body.get("id"));
+        jdbcTemplate.update("Delete from transaction_description\n" +
+                "where user_id= ?;",body.get("id"));
+        jdbcTemplate.update("Delete from board\n" +
+                "where USER_ID= ?;",body.get("id"));
+        jdbcTemplate.update("Delete from holdingstock\n" +
+                "where user_id= ?;",body.get("id"));
+        jdbcTemplate.update("Delete from watchlist\n" +
+                "where S_USER_ID= ?;",body.get("id"));
         jdbcTemplate.update("Delete from s_user\n" +
-                "where id= ?;",body.get("id"));
+                "where ID= ?;",body.get("id"));
         return new IsSuccessDto(true);
     }
     
