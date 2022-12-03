@@ -48,7 +48,7 @@ public class AdminRepository {
     public List<EnterpriseInfoDto> findEnterpriseInfo(){
         var rowMapper = BeanPropertyRowMapper.newInstance(EnterpriseInfoDto.class);
         List<EnterpriseInfoDto> enterpriseInfoDto = jdbcTemplate.query(
-                "SELECT e.ent_nm,e.ENT_SMRY, s.S_LAST\n" +
+                "SELECT e.ent_nm,e.ENT_SMRY,e.STOCK_STK_CD,s.S_LAST\n" +
                     "FROM enterprise_info e, stock_quote s\n" +
                     "where e.STOCK_STK_CD=s.STOCK_STK_CD and Date(s_date)='2022-10-28';",rowMapper);
         return enterpriseInfoDto;

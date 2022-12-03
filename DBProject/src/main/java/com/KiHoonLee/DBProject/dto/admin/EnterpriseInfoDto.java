@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class EnterpriseInfoDto {
     private String entNm;
     private String entSmry;
+    private String stockStkCd;
     private int sLast;
 }
