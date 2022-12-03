@@ -51,6 +51,12 @@ public class AdminService {
 
     }
 
+    //주식회사 삭제
+    public IsSuccessDto deleteEnterprise(Map<String,String> body){
+        IsSuccessDto isSuccessDto = adminRepository.deleteEnterprise(body);
+        return isSuccessDto;
+    }
+
     //해당기업의 게시판 글들을 가져옴
     public List<Board> getPosts(String stockName) {
         List<Board> boards;

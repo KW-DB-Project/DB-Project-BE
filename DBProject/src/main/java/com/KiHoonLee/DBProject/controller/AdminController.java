@@ -51,6 +51,13 @@ public class AdminController {
         return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
     }
 
+    //주식회사 삭제
+    @PostMapping("/enterprise/delete")
+    public ResponseEntity<?> deleteEnterprise(@RequestBody Map<String, String> body) {
+        IsSuccessDto isSuccessDto = adminService.deleteEnterprise(body);
+        return new ResponseEntity<>(isSuccessDto, HttpStatus.OK);
+    }
+
     //기업명으로 토론방 게시글 검색
     @PostMapping("/community/searchPosts")
     public ResponseEntity<?> getPostsInfo(@RequestBody Map<String, String> body) {
