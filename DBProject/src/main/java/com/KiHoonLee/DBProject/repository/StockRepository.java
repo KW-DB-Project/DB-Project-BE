@@ -81,7 +81,7 @@ public class StockRepository {
         List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
                     "SELECT stk.STK_NM, s.S_LAST, s.S_CHG\n" +
                         "FROM STOCK_QUOTE as s, STOCK as stk\n" +
-                        "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD\n" +
+                        "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD AND stk.STK_CD NOT IN ('999999')\n" +
                         "ORDER BY s.S_CHG DESC",rowMapper);
         return stockNamePriceChanges;
     }
