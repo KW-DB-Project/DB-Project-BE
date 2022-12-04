@@ -66,16 +66,31 @@ public class MainRepository {
     //홈 화면에서 급등주 상위 2개 급락주 하위 2개를 얻음
     public List<StockNamePriceChange> findFluctuationRank() {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePriceChange.class);
-        List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
-            "(SELECT stk.STK_NM, s.S_LAST, s.S_CHG\n" +
+        List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query("(SELECT stk.STK_NM, s.S_LAST, s.S_CHG\n" +
                 "FROM STOCK_QUOTE as s, STOCK as stk\n" +
-                "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD\n" +
+                "WHERE \n" +
+                "\tcase\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=7\n" +
+                "\tthen s.s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -1 DAY)\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=1\n" +
+                "\tthen s.s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -2 DAY)\n" +
+                "\telse Date(s.s_date)='2022-10-28'\n" +
+                "\tend\n" +
+                "\tAND s.STOCK_STK_CD=stk.STK_CD\n" +
                 "ORDER BY s.S_CHG DESC\n" +
                 "LIMIT 2)\n" +
                 "UNION\n" +
                 "(SELECT stk.STK_NM, s.S_LAST, s.S_CHG\n" +
                 "FROM STOCK_QUOTE as s, STOCK as stk\n" +
-                "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD\n" +
+                "WHERE \n" +
+                "\tcase\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=7\n" +
+                "\tthen s.s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -1 DAY)\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=1\n" +
+                "\tthen s.s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -2 DAY)\n" +
+                "\telse Date(s.s_date)='2022-10-28'\n" +
+                "\tend\n" +
+                "    AND s.STOCK_STK_CD=stk.STK_CD\n" +
                 "ORDER BY s.S_CHG ASC\n" +
                 "LIMIT 2)",rowMapper);
         return stockNamePriceChanges;
