@@ -43,12 +43,33 @@ public class AdminRepository {
                 "where ID= ?;",body.get("id"));
         return new IsSuccessDto(true);
     }
-    
+
+    //유저 삭제
+    public IsSuccessDto deleteEnterprise(Map<String,String>body){
+        jdbcTemplate.update("Delete from stockholder\n" +
+                "where STOCK_STK_CD= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from transaction_description\n" +
+                "where stock_stk_cd= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from board\n" +
+                "where STOCK_STK_CD= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from holdingstock\n" +
+                "where stock_stk_cd= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from watchlist\n" +
+                "where STOCK_STK_CD= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from stock_quote\n" +
+                "where STOCK_STK_CD= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from enterprise_info\n" +
+                "where STOCK_STK_CD= ?;",body.get("code"));
+        jdbcTemplate.update("Delete from stock\n" +
+                "where STK_CD= ?;",body.get("code"));
+        return new IsSuccessDto(true);
+    }
+
     //주식회사 조회
     public List<EnterpriseInfoDto> findEnterpriseInfo(){
         var rowMapper = BeanPropertyRowMapper.newInstance(EnterpriseInfoDto.class);
         List<EnterpriseInfoDto> enterpriseInfoDto = jdbcTemplate.query(
-                "SELECT e.ent_nm,e.ENT_SMRY, s.S_LAST\n" +
+                "SELECT e.ent_nm,e.ENT_SMRY,e.STOCK_STK_CD,s.S_LAST\n" +
                     "FROM enterprise_info e, stock_quote s\n" +
                     "where e.STOCK_STK_CD=s.STOCK_STK_CD and Date(s_date)='2022-10-28';",rowMapper);
         return enterpriseInfoDto;
