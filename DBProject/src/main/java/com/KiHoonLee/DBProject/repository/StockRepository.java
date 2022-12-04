@@ -109,10 +109,19 @@ public class StockRepository {
     public List<StockNamePriceVolume> findAllStockVolume() {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePriceVolume.class);
         List<StockNamePriceVolume> stockNamePriceVolumes = jdbcTemplate.query(
-                    "SELECT stk.STK_NM, s.S_LAST, s.S_VOL\n" +
-                        "FROM STOCK_QUOTE as s, STOCK as stk\n" +
-                        "WHERE Date(s.S_DATE)='2022-10-28' AND s.STOCK_STK_CD=stk.STK_CD\n" +
-                        "ORDER BY s.S_VOL DESC",rowMapper);
+                "SELECT stk.STK_NM, s.S_LAST, s.S_VOL\n" +
+                "FROM STOCK_QUOTE as s, STOCK as stk\n" +
+                "WHERE \n" +
+                "\t\tcase\n" +
+                "        when DAYOFWEEK(S_date)=7\n" +
+                "        then Date(s_date)=DATE_ADD(Date(NOW()), INTERVAL -1 DAY)\n" +
+                "        when DAYOFWEEK(S_date)=1\n" +
+                "        then Date(s_date)=DATE_ADD(Date(NOW()), INTERVAL -2 DAY)\n" +
+                "        else Date(s_date)='2022-10-28'\n" +
+                "        end\n" +
+                "\tAND s.STOCK_STK_CD=stk.STK_CD\n" +
+                "    AND stk.STK_CD NOT IN ('999999')\n" +
+                "ORDER BY s.S_VOL DESC",rowMapper);
         return stockNamePriceVolumes;
     }
 }
