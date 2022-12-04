@@ -63,13 +63,13 @@ public class StockRepository {
     }
 
     //국내탭에서 관심종목 리스트를 얻음
-    //관심종목 중 등락비 기준
+    //관심종목 중 관심순위 기준
     public List<StockNamePriceChange> findAllStockInterest() {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePriceChange.class);
         List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
                 "SELECT stk.STK_NM, S.S_LAST, S.S_CHG\n" +
                 "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
-                "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
+                "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD AND stk.STK_CD NOT IN ('999999')\n" +
                 "GROUP BY W.STOCK_STK_CD, S.S_LAST, S.S_CHG\n" +
                 "ORDER BY COUNT(W.STOCK_STK_CD) DESC",rowMapper);
         return stockNamePriceChanges;
