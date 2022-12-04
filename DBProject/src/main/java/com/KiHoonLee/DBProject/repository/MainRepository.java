@@ -46,11 +46,20 @@ public class MainRepository {
         var rowMapper = BeanPropertyRowMapper.newInstance(StockNamePrice.class);
         List<StockNamePrice> stockNamePrices = jdbcTemplate.query(
                 "SELECT stk.STK_NM, S.S_LAST\n" +
-                    "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
-                    "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD\n" +
-                    "GROUP BY W.STOCK_STK_CD, S.S_LAST\n" +
-                    "ORDER BY COUNT(W.STOCK_STK_CD) DESC\n" +
-                    "LIMIT 5",rowMapper);
+                "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
+                "WHERE \n" +
+                "\tcase\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=7\n" +
+                "\tthen s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -1 DAY)\n" +
+                "\twhen DAYOFWEEK('2022-10-28')=1\n" +
+                "\tthen s_date=DATE_ADD(Date('2022-10-28'), INTERVAL -2 DAY)\n" +
+                "\telse Date(s_date)='2022-10-28'\n" +
+                "\tend\n" +
+                "\tAND W.STOCK_STK_CD = S.STOCK_STK_CD \n" +
+                "    AND stk.STK_CD = W.STOCK_STK_CD\n" +
+                "GROUP BY W.STOCK_STK_CD, S.S_LAST\n" +
+                "ORDER BY COUNT(W.STOCK_STK_CD) DESC\n" +
+                "LIMIT 5",rowMapper);
         return stockNamePrices;
     }
 
