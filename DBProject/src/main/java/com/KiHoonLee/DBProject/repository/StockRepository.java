@@ -69,7 +69,17 @@ public class StockRepository {
         List<StockNamePriceChange> stockNamePriceChanges = jdbcTemplate.query(
                 "SELECT stk.STK_NM, S.S_LAST, S.S_CHG\n" +
                 "FROM WATCHLIST as W, STOCK_QUOTE as S, STOCK as stk\n" +
-                "WHERE Date(S_DATE) = '2022-10-28' AND W.STOCK_STK_CD = S.STOCK_STK_CD AND stk.STK_CD = W.STOCK_STK_CD AND stk.STK_CD NOT IN ('999999')\n" +
+                "WHERE \n" +
+                "\t\tcase\n" +
+                "        when DAYOFWEEK(S_date)=7\n" +
+                "        then Date(s_date)=DATE_ADD(Date(NOW()), INTERVAL -1 DAY)\n" +
+                "        when DAYOFWEEK(S_date)=1\n" +
+                "        then Date(s_date)=DATE_ADD(Date(NOW()), INTERVAL -2 DAY)\n" +
+                "        else Date(s_date)='2022-10-28'\n" +
+                "        end\n" +
+                "\tAND W.STOCK_STK_CD = S.STOCK_STK_CD \n" +
+                "    AND stk.STK_CD = W.STOCK_STK_CD\n" +
+                "    AND stk.STK_CD NOT IN ('999999')\n" +
                 "GROUP BY W.STOCK_STK_CD, S.S_LAST, S.S_CHG\n" +
                 "ORDER BY COUNT(W.STOCK_STK_CD) DESC",rowMapper);
         return stockNamePriceChanges;
