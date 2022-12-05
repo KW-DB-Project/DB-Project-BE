@@ -101,7 +101,7 @@ public class AdminRepository {
                     "insert into enterprise_info\n" +
                     "values(?,?,?,?,?);",body.get("name"),body.get("code"),body.get("count"),body.get("content"),body.get("category"));
             jdbcTemplate.update("insert into stock_quote\n" +
-                    "values(?,now(),?,?,?,?,0,0);",body.get("code"),body.get("price"),body.get("price"),body.get("price"),body.get("price"));
+                    "values(?,'2022-10-28',?,?,?,?,0,0);",body.get("code"),body.get("price"),body.get("price"),body.get("price"),body.get("price"));
             return new IsSuccessDto(true);
         }
     }
