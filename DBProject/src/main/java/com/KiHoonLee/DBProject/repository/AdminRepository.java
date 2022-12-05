@@ -23,7 +23,7 @@ public class AdminRepository {
     public List<UserInfoDto> findUserInfo(){
         var rowMapper = BeanPropertyRowMapper.newInstance(UserInfoDto.class);
         List<UserInfoDto> userInfoDto = jdbcTemplate.query(
-                "SELECT id, u_nm, age FROM db.s_user\n" +
+                "SELECT id, u_nm, age FROM s_user\n" +
                     "where id !='admin';",rowMapper);
         return userInfoDto;
     }
