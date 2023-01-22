@@ -30,19 +30,6 @@ MySQL|spring|Java
 
 <br />
 
-## 🗂 모듈 
-
-이름 | 버전
----|---|
-fortawsome|6.2.0|
-axios|1.1.3|
-chart.js|3.9.1
-recoil|0.7.6
-styled-components|5.3.6
-react-router-dom|6.4.3
-
-<br />
-
 ## 🖥 실행화면
 
 <img width="500" alt="스크린샷 2023-01-10 오후 5 13 47" src="https://user-images.githubusercontent.com/55472485/211496769-3bb6f0a7-9020-4e9a-8d9e-668d3a78061c.png">
