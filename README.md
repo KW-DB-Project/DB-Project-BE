@@ -24,9 +24,9 @@
 
 ## 📃 기술 스택
 
-Database | Framewortk | Language | Library
----|---|---|---|
-MySQL|spring|JavaScript|React
+Database | Framewortk | Language 
+---|---|---|
+MySQL|spring|Java
 
 <br />
 
